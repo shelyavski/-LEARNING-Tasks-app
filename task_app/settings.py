@@ -31,12 +31,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Preset apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # My apps
+    'tasks.apps.TasksConfig'
+    # Third party
 ]
 
 MIDDLEWARE = [
@@ -75,10 +80,14 @@ WSGI_APPLICATION = 'task_app.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': 'tasks',
+       'USER': 'postgres',
+       'PASSWORD': 'postgres',
+       'HOST': 'localhost',
+       'PORT': '5432',
+   }
 }
 
 
