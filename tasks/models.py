@@ -6,16 +6,16 @@ from django.db import models
 
 class Task(models.Model):
     TASK_PRIORITIES = (
-        ('L', 'Low'),
-        ('M', 'Medium'),
-        ('H', 'High'),
-        ('U', 'Urgent'),
+        ('Low', 'Low'),
+        ('Medium', 'Medium'),
+        ('High', 'High'),
+        ('Urgent', 'Urgent'),
     )
 
     title = models.CharField(max_length=70,)
     date_created = models.DateField(auto_now_add=True)
-    is_done = False
-    priority = models.CharField(max_length=1, choices=TASK_PRIORITIES)
+    is_done = models.BooleanField(default=False)
+    priority = models.CharField(max_length=6, choices=TASK_PRIORITIES)
 
     def __str__(self):
         return self.title

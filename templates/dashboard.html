@@ -1,17 +1,9 @@
 {% extends "main.html" %}
 {% block body %}
-<section class="vh-100" style="background-color: #eee;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-md-12 col-xl-10">
-
-        <div class="card">
-          <div class="card-header p-3">
-            <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Task List</h5>
-          </div>
-          <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
-
-            <table class="table mb-0">
+<h1><strong>Dashboard</strong></h1>
+      <hr>
+    <a class="btn-lg btn-primary" href="{% url 'create_task' %}" role="button">Create Task</a>
+      <table class="table mb-0">
               <thead>
                 <tr>
                   <th scope="col">Team Member</th>
@@ -21,7 +13,7 @@
                 </tr>
               </thead>
               <tbody>
-              {% for task in all_tasks %}
+              {% for task in pending_tasks %}
                 <tr class="fw-normal">
 {#                    Profile picture #}
                   <th>
@@ -40,22 +32,11 @@
                     <h6 class="mb-0"><span class="badge bg-dark">{{ task.priority }}</span></h6>
                   </td>
                   <td class="align-middle">
-                    <button class="btn btn-success">Done</button>
-                      <button class="btn btn-warning">Edit</button>
+                      <a class="btn btn-success" href="#" role="button">Done</a>
+                      <a class="btn btn-warning" href="{% url 'edit_task' task.pk %}" role="button">Edit</a>
                   </td>
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
-
-          </div>
-          <div class="card-footer text-end p-3">
-            <button class="btn btn-primary">Add Task</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
 {% endblock %}
