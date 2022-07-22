@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
 from .forms import TaskForm
+from django.views.decorators.http import require_POST
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
@@ -8,9 +10,16 @@ from .forms import TaskForm
 
 def view_tasks(request):
     context = {
-        'pending_tasks': Task.objects.filter(is_done=False)
+        'tasks': Task.objects.filter(is_done=False),
     }
     return render(request, 'dashboard.html', context)
+
+
+def view_completed_tasks(request):
+    context = {
+        'tasks': Task.objects.filter(is_done=True),
+    }
+    return render(request, 'completed_tasks.html', context)
 
 
 def create_task(request):
@@ -40,3 +49,10 @@ def edit_task(request, pk):
         'form': form
     }
     return render(request, 'create_task.html', context)
+
+
+@require_POST
+def delete_task(request, pk):
+    task = get_object_or_404(Task, id=pk)
+    task.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
