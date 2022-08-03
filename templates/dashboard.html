@@ -39,7 +39,14 @@
                     <h6 class="mb-0"><span>{{ task.date_created }}</span></h6>
                   </td>
                   <td class="align-middle">
+                      {% block actions %}
                       <a class="btn btn-warning" href="{% url 'edit_task' task.pk %}" role="button">Edit</a>
+{##}
+{#                      <form method="POST" action="{% url 'complete_task' task.pk %}">#}
+{#                        {% csrf_token %}#}
+{#                        <button type=submit class="btn btn-success">Complete</button>#}
+{#                      </form>#}
+                      {% endblock actions %}
                       <form method="POST" action="{% url 'delete_task' task.pk %}">
                         {% csrf_token %}
                         <button type=submit class="btn btn-danger">Delete</button>

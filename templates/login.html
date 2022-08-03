@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+{% load crispy_forms_tags %}
+{% block body %}
+    <div class="card border-primary mb-3">
+        <div class="col-sm-6">
+        <div class="card-body">
+            {% if page == 'register' %}
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                {{ form }}
+{#                {% crispy form %}#}
+                <input type="submit" value="Submit"> <br> <br>
+                <a href="{% url 'login' %}">Already have an account?</a>
+            </form>
+            {% else %}
+            {% endif %}
+        </div>
+        </div>
+    </div>
+{% endblock body %}
+{% block sidenav %}
+{% endblock sidenav %}
