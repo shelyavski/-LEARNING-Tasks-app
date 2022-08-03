@@ -57,10 +57,15 @@
       <ul class="nav navbar-nav">
         <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
         <li><a href="{% url 'completed_tasks' %}">Completed</a></li>
-        <li><a href="#">Profile</a></li>
+        <li><a href="{% url 'profile' %}">Profile</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+          {% if request.user.is_authenticated %}
+              <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+          {% else %}
+              <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              <li><a href="{% url 'register' %}"><span class="glyphicon glyphicon-log-in"></span> Register</a></li>
+          {% endif %}
       </ul>
     </div>
   </div>
