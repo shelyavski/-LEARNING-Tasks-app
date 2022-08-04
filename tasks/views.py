@@ -4,6 +4,7 @@ from .forms import TaskForm
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from users.models import Profile
 
 # Create your views here.
 
@@ -20,6 +21,7 @@ def view_tasks(request):
 def view_completed_tasks(request):
     context = {
         'tasks': Task.objects.filter(is_done=True),
+        'user': request.user
     }
     return render(request, 'completed_tasks.html', context)
 
@@ -31,7 +33,9 @@ def create_task(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_item = form.save(commit=False)
+            new_item.owner = request.user.profile
+            new_item.save()
             return redirect('dashboard')
     context = {
         'form': form

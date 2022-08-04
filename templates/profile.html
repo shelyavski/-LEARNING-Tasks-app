@@ -1,4 +1,16 @@
-{% extends "main.html" %}
+{#{% extends "main.html" %}#}
+{% load static %}
+
 {% block body %}
-<h1>it worky worky?</h1>
+    <ul>
+        {% for task in tasks %}
+            <li><img src="{{ tasks.owner.profile_image.url }}"></li>
+        {% endfor %}
+    </ul>
+    <br><br><br><h1>------------------------------</h1><br><br>
+    <ul>
+        {% for profile in profiles %}
+            <li><img src="{{ profile.profile_image }}" alt="nnn"></li>
+        {% endfor %}
+    </ul>
 {% endblock body %}

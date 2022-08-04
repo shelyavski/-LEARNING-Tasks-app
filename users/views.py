@@ -6,19 +6,25 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from tasks.models import Task  # Delete later
+from users.models import Profile # Same
 
 # TODO: Add sessions
 # TODO: Add signals -> create profile when creating user
 
 
 @login_required(login_url='login')
-def profile(request):  # TODO: Add view and model
+def profile(request):  # TODO: Add view
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
-    return render(request, 'profile.html')
+    context = {
+        'tasks': Task.objects.all(),
+        'profiles': Profile.objects.all(),
+    }
+    return render(request, 'profile.html', context)
 
 
-def login_view(request):  # TODO: Add view
+def login_view(request):
     page = 'login'
 
     if request.user.is_authenticated:
@@ -47,7 +53,7 @@ def login_view(request):  # TODO: Add view
     return render(request, 'login.html')
 
 
-def logout_view(request):  # TODO: Add view
+def logout_view(request):
     logout(request)
     messages.error(request, 'User was logged out successfully.')
     return redirect('login')
