@@ -5,25 +5,31 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from users.models import Profile
+from django.contrib.auth.models import User
 
 # Create your views here.
 
 
 @login_required(login_url='login')
 def view_tasks(request):
+    user = User.objects.get(username=request.user)
     context = {
-        'tasks': Task.objects.filter(is_done=False),
+        'user': user,
+        'user_tasks': Task.objects.filter(owner=user.profile).filter(is_done=False),  # TODO: Only displays task of which the profile is the owner. Add all tasks that are assigned to user.
+        'page': 'pending'
     }
     return render(request, 'dashboard.html', context)
 
 
 @login_required(login_url='login')
 def view_completed_tasks(request):
+    user = User.objects.get(username=request.user)
     context = {
-        'tasks': Task.objects.filter(is_done=True),
-        'user': request.user
+        'user': user,
+        'user_tasks': Task.objects.filter(owner=user.profile).filter(is_done=True),  # TODO: Only displays task of which the profile is the owner. Add all tasks that are assigned to user.
+        'page': 'completed'
     }
-    return render(request, 'completed_tasks.html', context)
+    return render(request, 'dashboard.html', context)
 
 
 @login_required(login_url='login')

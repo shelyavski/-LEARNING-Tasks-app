@@ -10,16 +10,23 @@ from tasks.models import Task  # Delete later
 from users.models import Profile # Same
 
 # TODO: Add sessions
-# TODO: Add signals -> create profile when creating user
 
 
 @login_required(login_url='login')
-def profile(request):  # TODO: Add view
+def profile(request):  # TODO: Fill out view
+    user = User.objects.get(username=request.user)
+    user_info = {
+        'Username': user.username,
+        'First Name': f'{user.first_name.capitalize()} {user.last_name.capitalize()}',
+        'Email': user.email,
+        'Password': '*********',
+        "Total Tasks": len(Task.objects.filter(owner=user.profile)),
+    }
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
     context = {
-        'tasks': Task.objects.all(),
-        'profiles': Profile.objects.all(),
+        'user': user,
+        'user_info': user_info,
     }
     return render(request, 'profile.html', context)
 

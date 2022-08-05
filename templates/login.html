@@ -1,26 +1,59 @@
 {% extends "main.html" %}
 {% load crispy_forms_tags %}
 {% block body %}
-    <div class="card border-primary mb-3">
-        <div class="col-sm-6">
-        <div class="card-body">
-            {% if page == 'register' %}
-            <form method="POST" action="{% url 'register' %}">
-                {% csrf_token %}
-                {{ form }}
-{#                {% crispy form %}#}
-                <input type="submit" value="Submit"> <br> <br>
-                <a href="{% url 'login' %}">Already have an account?</a>
-            </form>
-            {% else %}
-                <form method="POST" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    <input type="text" name="username" placeholder="Username">
-                    <input type="password" name="password" placeholder="Password">
-                    <input type="submit" value="Login">
-                </form>
-            {% endif %}
-        </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+                <div class="card border-primary m-lg-3">
+                    <div class="card-body text-bg-dark text-center">
+                        {% if page == 'register' %}
+                        <form method="POST" action="{% url 'register' %}">
+                            {% csrf_token %}
+                            <h2>Welcome!</h2>
+                            <hr>
+                            {% for field in form %}
+                                <div class="fieldWrapper">
+                                    {{ field.errors }}
+                                    {{ field.label_tag }}
+                                    <div class="form-control mb-3">
+                                        {{ field }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                            <hr>
+                            <a href="{% url 'login' %}">Already have an account?</a>
+                        </form>
+                        {% else %}
+                            <form method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+                                <h2>Welcome!</h2>
+                                <hr>
+                                <div class="mb-3">
+                                    <label for="user_field" class="form-label">Username</label>
+                                    <input type="text" class="form-control" name="username" id="user_field" placeholder="Username">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password_field" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password_field" name="password" placeholder="Password">
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-success">Login</button>
+                                </div>
+                                <hr>
+                                <p>Don't have a profile yet?<a href="{% url 'register' %}">Register here.</a></p>
+                            </form>
+                        {% endif %}
+                    </div>
+                    </div>
+                </div>
+                <div class="col">
+                </div>
+            </div>
         </div>
     </div>
 {% endblock body %}
