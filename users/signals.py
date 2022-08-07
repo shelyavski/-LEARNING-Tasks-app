@@ -9,5 +9,19 @@ def create_profile(sender, instance, created, **kwargs):  # Creates a profile ev
     if created:
         user = instance
         user_profile = Profile.objects.create(
-            user=user
+            user=user,
+            username=user.username,
         )
+
+
+@receiver(post_save, sender=Profile)
+def update_user(sender, instance, created, **kwargs):
+    profile = instance
+    user = profile.user
+    if not created:
+        user.username = profile.username
+        user.first_name = profile.name
+        user.email = profile.email
+        user.save()
+
+

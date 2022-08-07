@@ -5,22 +5,23 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from .forms import ProfileEditForm
 from django.contrib.auth.models import User
-from tasks.models import Task  # Delete later
-from users.models import Profile # Same
+from tasks.models import Task
+
 
 # TODO: Add sessions
 
-
+# -------- Profile views --------
 @login_required(login_url='login')
 def profile(request):  # TODO: Fill out view
-    user = User.objects.get(username=request.user)
+    user = User.objects.get(username=request.user).profile
     user_info = {
         'Username': user.username,
-        'First Name': f'{user.first_name.capitalize()} {user.last_name.capitalize()}',
+        'Name': user.name,
         'Email': user.email,
         'Password': '*********',
-        "Total Tasks": len(Task.objects.filter(owner=user.profile)),
+        "Total Tasks": len(Task.objects.filter(owner=user)),
     }
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
@@ -31,6 +32,22 @@ def profile(request):  # TODO: Fill out view
     return render(request, 'profile.html', context)
 
 
+@login_required(login_url='login')
+def edit_user(request):
+    form = ProfileEditForm(instance=request.user.profile)
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'edit_user.html', context)
+
+
+# -------- Authentication views --------
 def login_view(request):
     page = 'login'
 
@@ -60,6 +77,7 @@ def login_view(request):
     return render(request, 'login.html')
 
 
+@login_required(login_url='login')
 def logout_view(request):
     logout(request)
     messages.error(request, 'User was logged out successfully.')
@@ -79,7 +97,7 @@ def register_user(request):
             user.username = user.username.lower()
             user.save()
 
-            messages.success(request, 'User account created!')  # TODO: Fix how it's displayed
+            messages.success(request, 'User account created!')
 
             login(request, user)
             return redirect('dashboard')

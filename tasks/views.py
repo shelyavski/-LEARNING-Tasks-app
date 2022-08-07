@@ -13,9 +13,11 @@ from django.contrib.auth.models import User
 @login_required(login_url='login')
 def view_tasks(request):
     user = User.objects.get(username=request.user)
+    profile = user.profile
     context = {
-        'user': user,
-        'user_tasks': Task.objects.filter(owner=user.profile).filter(is_done=False),  # TODO: Only displays task of which the profile is the owner. Add all tasks that are assigned to user.
+        'user': profile,
+        'user_tasks': Task.objects.filter(owner=profile).filter(is_done=False),  # TODO: Only displays task of which the profile is the owner. Add all tasks that are assigned to user.
+        "total_tasks": len(Task.objects.filter(owner=profile)),
         'page': 'pending'
     }
     return render(request, 'dashboard.html', context)
@@ -24,9 +26,10 @@ def view_tasks(request):
 @login_required(login_url='login')
 def view_completed_tasks(request):
     user = User.objects.get(username=request.user)
+    profile = user.profile
     context = {
-        'user': user,
-        'user_tasks': Task.objects.filter(owner=user.profile).filter(is_done=True),  # TODO: Only displays task of which the profile is the owner. Add all tasks that are assigned to user.
+        'user': profile,
+        'user_tasks': Task.objects.filter(owner=profile).filter(is_done=True),  # TODO: Only displays task of which the profile is the owner. Add all tasks that are assigned to user.
         'page': 'completed'
     }
     return render(request, 'dashboard.html', context)

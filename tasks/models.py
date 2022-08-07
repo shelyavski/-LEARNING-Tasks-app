@@ -18,7 +18,7 @@ class Task(models.Model):
     is_done = models.BooleanField(default=False)
     priority = models.CharField(max_length=6, choices=TASK_PRIORITIES)
     owner = models.ForeignKey(Profile, blank=True, null=True, editable=False, on_delete=models.CASCADE, related_name='owner')
-    assigned_members = models.ForeignKey(Profile, blank=True, null=True, on_delete=models.RESTRICT, related_name='assigned_members')
+    assigned_members = models.ForeignKey(Profile, blank=True, null=True, on_delete=models.CASCADE, related_name='assigned_members')
 
     def __str__(self):
         return self.title

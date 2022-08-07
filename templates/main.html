@@ -63,20 +63,20 @@
             <div class="well">
             <div class="card m-lg-3 text-bg-dark">
                 <div class="card-body text-center">
-                    {% if user.profile.profile_image %}
-                        <img src="{{ user.profile.profile_image.url }}"
+                    {% if user.profile_image %}
+                        <img src="{{ user.profile_image.url }}"
                              class="rounded-circle img-fluid" style="width: 150px;">
                     {% else %}
                         <img src="{% static 'images/profiles/default_profile_image.png' %}"
                              class="rounded-circle img-fluid" style="width: 150px;">
                     {% endif %}
-                    <h5 class="my-1">{{ user.first_name }} {{ user.last_name }}</h5>
+                    <h5 class="my-1">{{ user.name}}</h5>
                     <h5 class="mb-3 text-muted mb-1">{{ user.username }}</h5>
-                    <p class="text-muted mb-1">EMPTY TEXT</p>
-                    <p class="text-muted mb-4">EMPTY TEXT</p>
-                    <div class="d-flex justify-content-center mb-2">
-                        <button type="button" class="btn btn-primary">EMPTY BUTTON</button>
-                        <button type="button" class="btn btn-outline-primary ms-1">EMPTY BUTTON 2</button>
+                    <p class="text-muted mb-1">Total tasks: {{ total_tasks }}</p>
+                    <p class="text-muted mb-4">Last Login: {{ user.user.last_login }}</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-center mb-2">
+                        <a class="btn btn-success" href="{% url 'profile' %}">View Profile</a>
+                        <a class="btn btn-success" href="{% url 'edit_user' %}">Edit Profile</a>
                     </div>
                 </div>
             </div>
